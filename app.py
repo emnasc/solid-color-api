@@ -1,13 +1,13 @@
 from io import BytesIO
 from flask import Flask, send_file, request, make_response
 from PIL import Image
-from re import findall
+from re import match
 
 app = Flask(__name__)
 
 
 def hex_to_rgb(hex_val: str):
-    assert findall(r'[0-9a-fA-F]+', hex_val), f"Invalid hex code: {hex_val}"
+    assert match(r'[0-9a-fA-F]+', hex_val), f"Invalid hex code: {hex_val}"
 
     if len(hex_val) not in (3, 6):
         raise Exception("Invalid hex code length")
