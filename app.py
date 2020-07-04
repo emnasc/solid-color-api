@@ -43,6 +43,7 @@ def solid_image():
     for arg in ('width', 'height', 'hex-color'):
         if arg not in request.args:
             return make_response(f"{arg} not provided", 400)
+
     try:
         width = request.args.get('width')
         height = request.args.get('height')
