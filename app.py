@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 
 def hex_to_rgb(hex_val: str):
-    assert findall(r'[0-9a-fA-F]+', hex_val), "Invalid hex code"
+    assert findall(r'[0-9a-fA-F]+', hex_val), f"Invalid hex code: {hex_val}"
 
     if len(hex_val) not in (3, 6):
         raise Exception("Invalid hex code length")
@@ -24,8 +24,8 @@ def hex_to_rgb(hex_val: str):
 
 
 def make_image(width, height, color_hex):
-    assert width.isnumeric(), "Invalid width value"
-    assert height.isnumeric(), "Invalid height value"
+    assert width.isnumeric(), f"Invalid width value: {width}"
+    assert height.isnumeric(), f"Invalid height value: {height}"
 
     color_val = hex_to_rgb(color_hex)
     return Image.new('RGB', (int(width), int(height)), color=color_val)
@@ -40,18 +40,17 @@ def send_image(pillow_image):
 
 @app.route('/')
 def solid_image():
-    if 'width' not in request.args:
-        return make_response("width not provided", 400)
-    elif 'height' not in request.args:
-        return make_response("height not provided", 400)
-    elif 'hex-color' not in request.args:
-        return make_response("hex-color not provided", 400)
-
-    width = request.args.get('width')
-    height = request.args.get('height')
-    hex_color = request.args.get('hex-color')
-    image = make_image(width, height, hex_color)
-    return send_image(image)
+    for arg in ('width', 'height', 'hex-color'):
+        if arg not in request.args:
+            return make_response(f"{arg} not provided", 400)
+    try:
+        width = request.args.get('width')
+        height = request.args.get('height')
+        hex_color = request.args.get('hex-color')
+        image = make_image(width, height, hex_color)
+        return send_image(image)
+    except Exception as e:
+        return make_response(f"Error: {str(e)}", 500)
 
 
 if __name__ == '__main__':
