@@ -36,7 +36,7 @@ curl --location --request GET 'http://127.0.0.1:5000/?width=150&height=200&hex-c
 ```
 > ![Sample Image](./solid_color_sample_image.jpg)
 
-Otherwise, the API will return a `500` status code with either a appropriate  custom message or an error description
+Otherwise, the API will returns a `500` status code with either a appropriate custom message or an error description
 ```shell script
 curl --location --request GET 'http://127.0.0.1:5000/?width=150&height=200&hex-color=potato'
 ```
